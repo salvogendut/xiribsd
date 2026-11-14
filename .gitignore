@@ -1,0 +1,4 @@
+# Reproducible downloads, temporary builds and generated release artifacts.
+/cache/
+/work/
+/out/
