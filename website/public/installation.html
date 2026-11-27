@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#24594f">
-    <meta name="description" content="Install XiriBSD on an emulated SGI Indy in Prismatic, then use xiriprep to prepare an IRIX desktop from your own installed donor image.">
+    <meta name="description" content="Install XiriBSD on an emulated SGI Indy in Prismatic or standalone IRIS, then use xiriprep to prepare an IRIX desktop from your own donor image.">
     <meta property="og:type" content="article">
     <meta property="og:title" content="Installation howto — XiriBSD">
-    <meta property="og:description" content="From a fresh Indy disk to native NetBSD and an IRIX desktop: Prismatic setup, installation, and xiriprep donor import.">
+    <meta property="og:description" content="From a fresh Indy disk to native NetBSD and an IRIX desktop: Prismatic or standalone IRIS setup, installation, and xiriprep donor import.">
     <meta property="og:url" content="https://xiribsd.org/installation.html">
     <meta property="og:image" content="https://xiribsd.org/assets/xiri-logo.png">
     <link rel="canonical" href="https://xiribsd.org/installation.html">
@@ -31,10 +31,10 @@
 
       <main id="main" class="guide">
         <header class="guide-header">
-          <p class="eyebrow">SGI Indy · Prismatic</p>
+          <p class="eyebrow">SGI Indy · Prismatic or IRIS</p>
           <h1>Installation howto</h1>
           <p class="guide-summary">Install native XiriBSD first. Then run <code>xiriprep</code> on the installed system to prepare an IRIX desktop from your own donor image.</p>
-          <p class="guide-meta">Updated <time datetime="2026-11-27">27 November 2026</time> · Based on the Xiri installation documentation</p>
+          <p class="guide-meta">Updated <time datetime="2026-11-27">27 November 2026</time> · Based on the Xiri and IRIS documentation</p>
           <div class="guide-notice">
             <p><strong>Development media.</strong> The filenames below identify current development builds. Public release downloads are not available yet; the <a href="./#downloads">Downloads section</a> will link to externally hosted images when they are ready. This guide covers Indy emulation; physical workstation testing is still ahead.</p>
           </div>
@@ -45,7 +45,9 @@
             <p>On this page</p>
             <ol>
               <li><a href="#before-you-start">Before you start</a></li>
-              <li><a href="#fresh-install">Install on a fresh Indy</a></li>
+              <li><a href="#prismatic-setup">Set up Prismatic</a></li>
+              <li><a href="#iris-install">Set up standalone IRIS</a></li>
+              <li><a href="#fresh-install">Install XiriBSD</a></li>
               <li><a href="#existing-indy">Use an existing Indy</a></li>
               <li><a href="#import-donor">Import your IRIX desktop</a></li>
               <li><a href="#first-login">Reboot and log in</a></li>
@@ -60,18 +62,18 @@
               <h2 id="before-title">Before you start</h2>
               <p>The native installer provides NetBSD, the Xiri compatibility module, and the tools needed to import the desktop. The first login opens native <strong>ctwm</strong>. The original IRIX programs and fonts come from your own installed IRIX disk image afterward.</p>
               <ul>
-                <li><a href="https://github.com/salvogendut/prismatic">Prismatic</a>, configured as an Indy with an R4400 or R5000 CPU, 256 MiB of RAM, and Newport graphics.</li>
+                <li><a href="https://github.com/salvogendut/prismatic">Prismatic</a> or <a href="https://github.com/techomancer/iris">IRIS</a>, configured as an Indy with an R4400 or R5000 CPU, 256 MiB of RAM, and Newport graphics.</li>
                 <li>The installer <code>xiribsd-indy-xiriprep-11.99.11.iso</code>, found under <code>.work/images/</code> in the Xiri checkout for the documented build.</li>
                 <li>A new, blank 6144 MiB raw disk for XiriBSD. The installer will format this disk.</li>
                 <li>For the IRIX desktop, a standalone CHD or raw whole-disk image of your own installed IRIX <strong>6.5.22f</strong> or <strong>6.5.30f</strong> system.</li>
               </ul>
+              <p>Prismatic is built on the IRIS emulator core. Choose either <a href="#prismatic-setup">Prismatic’s settings menus</a> or <a href="#iris-install">vanilla IRIS’s standalone window and TOML configuration</a>, then follow the same guest installation and donor-import steps.</p>
               <p>The same native installer serves both IRIX releases. Each installed system uses one donor release; keep a separate system disk for the other. The current qualification covers 6.5.22f on an R4400 and 6.5.30f on an R5000.</p>
               <p>Already installed the earlier <code>xiribsd-indy-native-11.99.11.iso</code>? Keep your disk and follow <a href="#existing-indy">the tools-CD route</a>.</p>
             </section>
 
-            <section class="guide-section" id="fresh-install" aria-labelledby="fresh-title">
-              <h2 id="fresh-title">Install on a fresh Indy</h2>
-              <h3>Attach the disk and installer</h3>
+            <section class="guide-section" id="prismatic-setup" aria-labelledby="prismatic-title">
+              <h2 id="prismatic-title">Set up Prismatic</h2>
               <p>Start Prismatic and pause the machine. Open <kbd>F9</kbd> and set the following options:</p>
               <div class="table-scroll" tabindex="0" role="region" aria-label="Prismatic installation settings">
                 <table class="guide-table">
@@ -83,8 +85,65 @@
                   </tbody>
                 </table>
               </div>
+              <p>Save with <kbd>F9</kbd>, start with <kbd>Ctrl</kbd> + <kbd>P</kbd>, and continue to <a href="#fresh-install">Install XiriBSD</a>.</p>
+            </section>
+
+            <section class="guide-section" id="iris-install" aria-labelledby="iris-title">
+              <h2 id="iris-title">Set up standalone IRIS</h2>
+              <p>You can run the <code>iris</code> executable directly, with its own graphics window and terminal monitor. The examples below use the current configuration documented in the Xiri project’s <a href="https://github.com/salvogendut/iris/tree/xiri">IRIS integration branch</a>. This is the standalone emulator; Prismatic is optional. Upstream IRIS releases may contain a different set of NetBSD fixes.</p>
+              <h3>Build the emulator</h3>
+              <p>On a Linux workstation, install Git, Rust through rustup, and the host C/C++ build tools. The checkout’s <code>rust-toolchain.toml</code> selects nightly Rust automatically. See IRIS’s <a href="https://github.com/salvogendut/iris/blob/xiri/FEATURES.md">build and feature reference</a> for host-specific options.</p>
+              <p class="command-context">On your workstation, in a directory for source checkouts:</p>
+              <pre tabindex="0"><code class="language-sh">git clone --branch xiri https://github.com/salvogendut/iris.git iris
+cd iris
+cargo build --release --locked --bin iris</code></pre>
+              <p>If you already have the matching IRIS checkout, build from there. The executable is <code>target/release/iris</code>. In the launch commands below, replace <code>/absolute/path/to/iris</code> with that checkout’s location. Older executables may reject the current <code>[[devices]]</code> syntax; rebuild from the current integration branch before using this example.</p>
+              <h3>Create a separate Indy directory</h3>
+              <p>Keep this machine’s configuration, disk, and NVRAM together. Create the blank 6 GiB disk once; this command refuses to overwrite an existing file.</p>
+              <p class="command-context">On your workstation, in a directory for virtual machines:</p>
+              <pre tabindex="0"><code class="language-sh">mkdir xiribsd-indy
+cd xiribsd-indy
+python3 -c 'with open("xiribsd-indy.raw", "xb") as disk: disk.truncate(6144 * 1024 * 1024)'</code></pre>
+              <p>Save the following as <code>iris.toml</code> in this new directory. Replace the installer path with the absolute path to your ISO. Use <code>r5000</code> instead of <code>r4400</code> for the 6.5.30f donor route.</p>
+              <pre tabindex="0"><code class="language-toml">prom = "(embedded)"
+nvram = "nvram.bin"
+banks = [128, 128, 0, 0]
+headless = false
+no_audio = true
+scsi_deferred_int = true
+
+[machine]
+profile = "indy_ip24"
+cpu = "r4400"
+
+[graphics]
+board = "newport"
+
+[[devices]]
+type = "hdd"
+at = "scsi0/t1"
+path = "xiribsd-indy.raw"
+overlay = false
+
+[[devices]]
+type = "cdrom"
+at = "scsi0/t6"
+path = "/absolute/path/to/xiribsd-indy-xiriprep-11.99.11.iso"</code></pre>
+              <p>The default build includes the Indy PROM. The disk receives writes directly because <code>overlay = false</code>. Keep deferred SCSI interrupts enabled for NetBSD. Relative paths resolve from the directory where you launch IRIS, so always run this machine from <code>xiribsd-indy</code>.</p>
+              <p class="command-context">On your workstation, from the new Indy directory:</p>
+              <pre tabindex="0"><code class="language-sh">/absolute/path/to/iris/target/release/iris --validate --config iris.toml
+/absolute/path/to/iris/target/release/iris --config iris.toml</code></pre>
+              <p>Proceed when validation reports <strong>ok</strong>. Stop any other emulator using the default monitor and serial ports first. Keep the terminal open alongside the guest window, and continue to <a href="#fresh-install">Install XiriBSD</a>. <kbd>Right Ctrl</kbd> releases the mouse from the guest.</p>
+              <h3 id="iris-media">Change CDs in standalone IRIS</h3>
+              <p>After unmounting a CD inside the guest, press <kbd>Right Ctrl</kbd> + <kbd>F12</kbd> in the IRIS window to select another ISO. With this single-disc configuration, the selection replaces the current disc. Use this for the tools CD or the donor data CD below.</p>
+              <p>To eject the single disc without replacing it, enter <code>scsi eject 6</code> at the <strong>IRIS monitor in the host terminal</strong>. The monitor is separate from both the guest shell and the PROM. To start with an empty tray next time, stop IRIS after halting the guest and remove the <code>path</code> line from the CD-ROM entry, leaving its <code>type</code> and <code>at</code> lines.</p>
+            </section>
+
+            <section class="guide-section" id="fresh-install" aria-labelledby="fresh-title">
+              <h2 id="fresh-title">Install XiriBSD</h2>
+              <p>These guest steps apply to both frontends, with the new disk at SCSI ID 1 and installer CD at ID 6.</p>
               <h3>Boot the CD</h3>
-              <p>Save with <kbd>F9</kbd> and start with <kbd>Ctrl</kbd> + <kbd>P</kbd>. Click the guest display, press <kbd>Esc</kbd> during startup, and choose <strong>5 — Enter Command Monitor</strong>. If the blank disk first reports “Unable to boot”, press <kbd>Enter</kbd> to reach the menu.</p>
+              <p>Click the guest display, press <kbd>Esc</kbd> during startup, and choose <strong>5 — Enter Command Monitor</strong>. If the blank disk first reports “Unable to boot”, press <kbd>Enter</kbd> to reach the menu.</p>
               <p class="command-context">At the Indy PROM’s <code>&gt;&gt;</code> prompt:</p>
               <pre tabindex="0"><code class="language-text">boot -f scsi(0)cdrom(6)rdisk(0)partition(8)ip2xboot</code></pre>
               <p>The <code>6</code> matches the CD-ROM’s SCSI ID. If you attached it at ID 4, use <code>cdrom(4)</code> instead. The installer displays Newport’s black-to-green gradient.</p>
@@ -96,8 +155,9 @@
                 <li>Select <strong>Finished configuring</strong>, then <strong>Exit Install System</strong>. At the installer’s <code>#</code> prompt, enter <code>halt</code> and wait for the disk to unmount.</li>
               </ol>
               <h3>Boot the installed system</h3>
-              <p>In <strong>F9 / Media</strong>, disconnect the CD at ID 6 and leave the disk at ID 1. Select <strong>F9 / General / PROM boot / NetBSD</strong>, save, and start the Indy. Choose <strong>Start System</strong> if the PROM menu appears.</p>
-              <p class="command-context">For a manual disk boot, use the Indy PROM’s <code>&gt;&gt;</code> prompt:</p>
+              <p><strong>Prismatic:</strong> in <strong>F9 / Media</strong>, disconnect the CD at ID 6 and leave the disk at ID 1. Select <strong>F9 / General / PROM boot / NetBSD</strong>, save, and start the Indy. Choose <strong>Start System</strong> if the PROM menu appears.</p>
+              <p><strong>Standalone IRIS:</strong> once <code>halt</code> has returned to the PROM, eject the CD with <code>scsi eject 6</code> in the host monitor. In the guest display, choose <strong>5 — Enter Command Monitor</strong> and set the NetBSD boot variables below. Keep the same <code>nvram.bin</code> for future boots; it stores this machine’s PROM settings.</p>
+              <p class="command-context">At the Indy PROM’s <code>&gt;&gt;</code> prompt (also usable for a manual Prismatic disk boot):</p>
               <pre tabindex="0"><code class="language-text">setenv OSLoader boot
 setenv OSLoadFilename netbsd.boot
 setenv OSLoadOptions auto
@@ -108,7 +168,7 @@ boot</code></pre>
 
             <section class="guide-section" id="existing-indy" aria-labelledby="existing-title">
               <h2 id="existing-title">Use an existing Indy</h2>
-              <p>If your disk was installed from the earlier <code>xiribsd-indy-native-11.99.11.iso</code>, add the tools without reinstalling. Boot that disk at SCSI ID 1. Attach <code>.work/images/xiriprep-indy-desktop-tools.iso</code> through <strong>F9 / Media / SCSI ID 6 / CD-ROM</strong>.</p>
+              <p>If your disk was installed from the earlier <code>xiribsd-indy-native-11.99.11.iso</code>, add the tools without reinstalling. Boot that disk at SCSI ID 1. Attach <code>.work/images/xiriprep-indy-desktop-tools.iso</code> through Prismatic’s <strong>F9 / Media / SCSI ID 6 / CD-ROM</strong> or <a href="#iris-media">IRIS’s CD picker</a>.</p>
               <p class="command-context">In a root shell inside the XiriBSD guest:</p>
               <pre tabindex="0"><code class="language-sh">mkdir -p /cdrom
 mount -r -t cd9660 /dev/cd0a /cdrom
@@ -128,7 +188,7 @@ umount /cdrom</code></pre>
               <p class="command-context">On your workstation:</p>
               <pre tabindex="0"><code class="language-sh">genisoimage -R -V OWNER_DONOR -o irix-donor.iso -graft-points \
   'IRIX donor.chd=/absolute/path/to/standalone.chd'</code></pre>
-              <p>Attach <code>irix-donor.iso</code> to Prismatic’s CD-ROM slot, normally SCSI ID 6.</p>
+              <p>Attach <code>irix-donor.iso</code> to the CD-ROM at SCSI ID 6, using Prismatic’s <strong>F9 / Media</strong> or <a href="#iris-media">IRIS’s CD picker</a>.</p>
               <p class="command-context">In the guest root shell:</p>
               <pre tabindex="0"><code class="language-sh">mkdir -p /cdrom
 mount -r -t cd9660 /dev/cd0a /cdrom
@@ -137,6 +197,12 @@ mount -r -t cd9660 /dev/cd0a /cdrom
               <p>The optional <code>--check</code> identifies the release and reports the account status without changing the donor, account, or session. The command without <code>--check</code> performs the import. Once it reports that the desktop is selected, run <code>umount /cdrom</code> and eject the CD.</p>
               <h3>Option B: raw image on a second disk</h3>
               <p>The tested setup used a second disk at SCSI ID 2, with an FFS filesystem on <code>/dev/sd1c</code> containing the exported IRIX disk as a regular file. Use the device and filename that match your disk.</p>
+              <p>In standalone IRIS, halt the guest and stop the emulator before adding this entry to <code>iris.toml</code>, then restart. Its path names the <strong>FFS carrier disk</strong> containing the donor file.</p>
+              <pre tabindex="0"><code class="language-toml">[[devices]]
+type = "hdd"
+at = "scsi0/t2"
+path = "/absolute/path/to/donor-carrier.raw"
+overlay = false</code></pre>
               <p class="command-context">In the guest root shell:</p>
               <pre tabindex="0"><code class="language-sh">mkdir -p /mnt/donors
 mount -r -t ffs /dev/sd1c /mnt/donors
@@ -195,12 +261,15 @@ mount -r -t ffs /dev/sd1c /mnt/donors
 
             <section class="guide-section" id="source-docs" aria-labelledby="sources-title">
               <h2 id="sources-title">Source documentation</h2>
-              <p>This howto adapts the Xiri installation documentation reviewed on 27 November 2026. Follow the source guides for subsequent changes and additional detail:</p>
+              <p>This howto adapts the Xiri installation documentation and IRIS user guides reviewed on 27 November 2026. Follow the source guides for subsequent changes and additional detail:</p>
               <ul>
                 <li><a href="https://github.com/salvogendut/xiri/blob/main/docs/INSTALL-INDY-PRISMATIC.md">Install XiriBSD on an Indy in Prismatic</a></li>
                 <li><a href="https://github.com/salvogendut/xiri/blob/main/docs/XIRIPREP.md">Prepare an IRIX desktop account with xiriprep</a></li>
                 <li><a href="https://github.com/salvogendut/xiri/blob/main/docs/XIRI-INSTALLATION.md">Reproducible Xiri installation and native ISO builds</a></li>
                 <li><a href="https://github.com/salvogendut/xiri/blob/main/docs/NATIVE-PACKAGE.md#switching-between-the-stock-and-xiri-kernels">Stock-kernel recovery and rollback</a></li>
+                <li><a href="https://github.com/salvogendut/iris/blob/xiri/HELP.md">Standalone IRIS configuration, keyboard controls, and validation</a></li>
+                <li><a href="https://github.com/salvogendut/iris/blob/xiri/FEATURES.md">IRIS build features and configuration reference</a></li>
+                <li><a href="https://github.com/salvogendut/iris/blob/xiri/debug.md#scsi-cd-rom-and-disks">IRIS monitor commands for CD-ROMs and disks</a></li>
               </ul>
             </section>
           </article>

@@ -28,7 +28,7 @@ links each image to its full-size original.
 
 `public/installation.html` covers the standard native XiriBSD install followed
 by `xiriprep` on the target. The homepage links it from the navigation,
-project description and footer. It covers a fresh Indy in Prismatic, the
+project description and footer. It covers a fresh Indy in Prismatic or standalone IRIS, the
 tools CD for an earlier native install, CHD and raw donor imports, account
 and session behavior, storage requirements and workstation build commands.
 
@@ -45,6 +45,17 @@ Links on the page point to the source repository's `main` branch. When refreshin
 media filenames, SCSI IDs, command examples and qualified donor releases
 against those guides. Development image names are not public download links;
 the Downloads section stays unpopulated until external release URLs exist.
+
+The standalone IRIS route was added from `../iris` at commit
+[`727f877`](https://github.com/salvogendut/iris/commit/727f877098ebf4002689c466668992f1c1092100),
+on its `xiri` integration branch, using `README.md`, `HELP.md`, `FEATURES.md`,
+`STORAGE.md`, `debug.md`, and the sample `iris.toml`. It uses the current
+`[[devices]]` schema, an independent NVRAM file, a directly writable raw disk,
+and CD-ROM ID 6 to share the guest instructions with Prismatic. Build commands
+identify the integration branch explicitly; upstream releases are not claimed
+to have the same NetBSD fixes. Recheck these settings and monitor commands when
+updating IRIS. The homepage’s collaboration section describes the project as a
+one man band and preserves the owner’s requested obfuscated contact wording.
 
 ## Preview
 
