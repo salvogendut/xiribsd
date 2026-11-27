@@ -60,16 +60,29 @@
           <article class="guide-content" aria-label="XiriBSD installation instructions">
             <section class="guide-section" id="before-you-start" aria-labelledby="before-title">
               <h2 id="before-title">Before you start</h2>
-              <p>The native installer provides NetBSD, the Xiri compatibility module, and the tools needed to import the desktop. The first login opens native <strong>ctwm</strong>. The original IRIX programs and fonts come from your own installed IRIX disk image afterward.</p>
+              <p>You can complete the native installation with just the ISO and a blank disk. The installer provides NetBSD, the Xiri compatibility module, native tools, and donor profiles; the first login opens native <strong>ctwm</strong>. All original IRIX executables, libraries, fonts, and desktop artwork come from your donor disk when you later run <code>xiriprep</code>.</p>
               <ul>
                 <li><a href="https://github.com/salvogendut/prismatic">Prismatic</a> or <a href="https://github.com/techomancer/iris">IRIS</a>, configured as an Indy with an R4400 or R5000 CPU, 256 MiB of RAM, and Newport graphics.</li>
-                <li>The installer <code>xiribsd-indy-xiriprep-11.99.11.iso</code>, found under <code>.work/images/</code> in the Xiri checkout for the documented build.</li>
+                <li>The installer <code>xiribsd-indy-donor-profiles-11.99.11.iso</code>, found under <code>.work/images/</code> in the Xiri checkout for the documented build.</li>
                 <li>A new, blank 6144 MiB raw disk for XiriBSD. The installer will format this disk.</li>
-                <li>For the IRIX desktop, a standalone CHD or raw whole-disk image of your own installed IRIX <strong>6.5.22f</strong> or <strong>6.5.30f</strong> system.</li>
+                <li>For the optional IRIX desktop, a standalone CHD or raw whole-disk image matching a supported donor profile. The reference releases are <strong>6.5.22f</strong> and <strong>6.5.30f</strong>; the current installer also recognizes the independently distributed <strong>SuperIRIX Indy 6.5.22m</strong>.</li>
               </ul>
               <p>Prismatic is built on the IRIS emulator core. Choose either <a href="#prismatic-setup">Prismatic’s settings menus</a> or <a href="#iris-install">vanilla IRIS’s standalone window and TOML configuration</a>, then follow the same guest installation and donor-import steps.</p>
-              <p>The same native installer serves both IRIX releases. Each installed system uses one donor release; keep a separate system disk for the other. The current qualification covers 6.5.22f on an R4400 and 6.5.30f on an R5000.</p>
-              <p>Already installed the earlier <code>xiribsd-indy-native-11.99.11.iso</code>? Keep your disk and follow <a href="#existing-indy">the tools-CD route</a>.</p>
+              <p>The same native installer includes all five desktop profiles below. Each installed system uses one donor release; keep separate system disks for 6.5.22f, 6.5.22m, and 6.5.30f.</p>
+              <div class="table-scroll" tabindex="0" role="region" aria-label="Qualified donor profiles and Indy targets">
+                <table class="guide-table">
+                  <thead><tr><th scope="col">Donor installation</th><th scope="col">IRIX release</th><th scope="col">XiriBSD target</th></tr></thead>
+                  <tbody>
+                    <tr><th scope="row">Project’s original-media reference</th><td>6.5.22f</td><td>Indy R4400</td></tr>
+                    <tr><th scope="row">Project’s original-media reference</th><td>6.5.30f</td><td>Indy R5000</td></tr>
+                    <tr><th scope="row">Additional Indigo2 IP28 donor</th><td>6.5.22f</td><td>Indy R4400</td></tr>
+                    <tr><th scope="row">Additional Octane IP30 donor</th><td>6.5.30f</td><td>Indy R5000</td></tr>
+                    <tr><th scope="row">SuperIRIX MAME Indy donor</th><td>6.5.22m</td><td>Indy R4400</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>These profiles cover specific tested desktop resources. A matching release number alone does not establish compatibility with every installed disk. See the <a href="https://github.com/salvogendut/xiri/blob/main/docs/results/2026-11-27-owner-donors.md">donor comparison and qualification results</a>.</p>
+              <p>Already installed an earlier XiriBSD Indy ISO, including <code>xiribsd-indy-native-11.99.11.iso</code> or <code>xiribsd-indy-xiriprep-11.99.11.iso</code>? Keep your disk and follow <a href="#existing-indy">the tools-CD route</a> for the current profiles.</p>
             </section>
 
             <section class="guide-section" id="prismatic-setup" aria-labelledby="prismatic-title">
@@ -81,7 +94,7 @@
                   <tbody>
                     <tr><th scope="row">General</th><td>Indy; R4400 or R5000; 256 MiB RAM; default Newport graphics; <strong>Graphics</strong> console; <strong>PROM boot: Keep existing</strong>.</td></tr>
                     <tr><th scope="row">Media: SCSI ID 1</th><td>Choose <strong>New disk…</strong>, select <strong>Raw</strong>, enter <strong>6144 MiB</strong>, and choose a new filename such as <code>xiribsd-indy.raw</code>. Select <strong>Create disk and attach to draft</strong>.</td></tr>
-                    <tr><th scope="row">Media: SCSI ID 6</th><td>Attach <code>xiribsd-indy-xiriprep-11.99.11.iso</code> as the <strong>CD-ROM</strong>.</td></tr>
+                    <tr><th scope="row">Media: SCSI ID 6</th><td>Attach <code>xiribsd-indy-donor-profiles-11.99.11.iso</code> as the <strong>CD-ROM</strong>.</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -128,7 +141,7 @@ overlay = false
 [[devices]]
 type = "cdrom"
 at = "scsi0/t6"
-path = "/absolute/path/to/xiribsd-indy-xiriprep-11.99.11.iso"</code></pre>
+path = "/absolute/path/to/xiribsd-indy-donor-profiles-11.99.11.iso"</code></pre>
               <p>The default build includes the Indy PROM. The disk receives writes directly because <code>overlay = false</code>. Keep deferred SCSI interrupts enabled for NetBSD. Relative paths resolve from the directory where you launch IRIS, so always run this machine from <code>xiribsd-indy</code>.</p>
               <p class="command-context">On your workstation, from the new Indy directory:</p>
               <pre tabindex="0"><code class="language-sh">/absolute/path/to/iris/target/release/iris --validate --config iris.toml
@@ -168,13 +181,16 @@ boot</code></pre>
 
             <section class="guide-section" id="existing-indy" aria-labelledby="existing-title">
               <h2 id="existing-title">Use an existing Indy</h2>
-              <p>If your disk was installed from the earlier <code>xiribsd-indy-native-11.99.11.iso</code>, add the tools without reinstalling. Boot that disk at SCSI ID 1. Attach <code>.work/images/xiriprep-indy-desktop-tools.iso</code> through Prismatic’s <strong>F9 / Media / SCSI ID 6 / CD-ROM</strong> or <a href="#iris-media">IRIS’s CD picker</a>.</p>
+              <p>If your disk was installed from an earlier native or xiriprep ISO, update the tools and profiles without reinstalling. Boot that disk at SCSI ID 1. Attach <code>.work/images/xiriprep-indy-donor-profiles-tools.iso</code> through Prismatic’s <strong>F9 / Media / SCSI ID 6 / CD-ROM</strong> or <a href="#iris-media">IRIS’s CD picker</a>. Keep the previous tools CD and back up any customized installed tools before updating.</p>
               <p class="command-context">In a root shell inside the XiriBSD guest:</p>
               <pre tabindex="0"><code class="language-sh">mkdir -p /cdrom
 mount -r -t cd9660 /dev/cd0a /cdrom
 (cd / &amp;&amp; tar -xzpf /cdrom/xiriprep.tgz)
 umount /cdrom</code></pre>
-              <p>Eject the tools CD, then attach your donor media. The current <code>xiribsd-indy-xiriprep-11.99.11.iso</code> already includes these tools, so this extra step is only for the earlier installation.</p>
+              <p>Eject the tools CD, then attach your donor media. The current <code>xiribsd-indy-donor-profiles-11.99.11.iso</code> already includes these tools and all five profiles.</p>
+              <h3>Revert the tools update</h3>
+              <p>If you previously used <code>xiriprep-indy-desktop-tools.iso</code>, reattach that CD and repeat the mount and extraction above. Restore customized tools from your backup. Follow the <a href="https://github.com/salvogendut/xiri/blob/main/docs/XIRIPREP.md#revert-the-tools-update">rollback instructions and hash checks</a> to remove the three added profiles only when they still match their shipped contents.</p>
+              <p>This tools update and rollback preserved the existing 4Dwm account and preferences on both original reference releases. Kernel, module, and desktop runtime upgrades have separate recovery procedures.</p>
             </section>
 
             <section class="guide-section" id="import-donor" aria-labelledby="donor-title">
@@ -184,7 +200,7 @@ umount /cdrom</code></pre>
                 <p><strong>Use a complete donor export.</strong> If the IRIX installation lives in an emulator overlay, stop the emulator and export the merged disk first. A large raw base file can still contain an empty SGI volume header. See the <a href="https://github.com/salvogendut/xiri/blob/main/profiles/README.md">donor export and profile guide</a>.</p>
               </div>
               <h3>Option A: CHD on a data CD</h3>
-              <p>Create a data ISO with your standalone donor CHD. Choose a new output filename and replace the path after the equals sign. The file inside the CD will be named <code>IRIX donor.chd</code>.</p>
+              <p>Create a data ISO with your standalone donor CHD. Choose a new output filename and replace the path after the equals sign. The file inside the CD will be named <code>IRIX donor.chd</code>. The 5.3 GiB SuperIRIX CHD exceeds this command’s single-file limit; use <a href="#superirix-donor">the second-disk method below</a> for that image.</p>
               <p class="command-context">On your workstation:</p>
               <pre tabindex="0"><code class="language-sh">genisoimage -R -V OWNER_DONOR -o irix-donor.iso -graft-points \
   'IRIX donor.chd=/absolute/path/to/standalone.chd'</code></pre>
@@ -194,8 +210,8 @@ umount /cdrom</code></pre>
 mount -r -t cd9660 /dev/cd0a /cdrom
 /usr/local/sbin/xiriprep --check --source '/cdrom/IRIX donor.chd' --user xiritest
 /usr/local/sbin/xiriprep --source '/cdrom/IRIX donor.chd' --user xiritest</code></pre>
-              <p>The optional <code>--check</code> identifies the release and reports the account status without changing the donor, account, or session. The command without <code>--check</code> performs the import. Once it reports that the desktop is selected, run <code>umount /cdrom</code> and eject the CD.</p>
-              <h3>Option B: raw image on a second disk</h3>
+              <p>The optional <code>--check</code> identifies the release, reports the selected desktop profile and account status, and checks any existing installation receipt. It does not change the donor, account, or session. The command without <code>--check</code> verifies every file in the selected plan before publishing the shared desktop. Once it reports that the desktop is selected, run <code>umount /cdrom</code> and eject the CD.</p>
+              <h3>Option B: CHD or raw image on a second disk</h3>
               <p>The tested setup used a second disk at SCSI ID 2, with an FFS filesystem on <code>/dev/sd1c</code> containing the exported IRIX disk as a regular file. Use the device and filename that match your disk.</p>
               <p>In standalone IRIS, halt the guest and stop the emulator before adding this entry to <code>iris.toml</code>, then restart. Its path names the <strong>FFS carrier disk</strong> containing the donor file.</p>
               <pre tabindex="0"><code class="language-toml">[[devices]]
@@ -208,7 +224,22 @@ overlay = false</code></pre>
 mount -r -t ffs /dev/sd1c /mnt/donors
 /usr/local/sbin/xiriprep --check --source '/mnt/donors/IRIX backup.img' --user xiritest
 /usr/local/sbin/xiriprep --source '/mnt/donors/IRIX backup.img' --user xiritest</code></pre>
-              <p>After a successful import, run <code>umount /mnt/donors</code>. The reader detects the format by content: either medium can contain a CHD or a raw whole-disk image. It reads the mounted file directly, including compressed CHD data.</p>
+              <p>After a successful import, run <code>umount /mnt/donors</code>. The reader detects the format by content: either medium can contain a CHD or a raw whole-disk image, subject to the medium’s file-size limit. It reads the mounted file directly, including compressed CHD data.</p>
+              <h3 id="superirix-donor">Use the SuperIRIX 6.5.22m donor</h3>
+              <p>Extract the operating-system disk <code>irix65.chd</code> from <code>irix65_chd.rar</code>. The separate Freeware CHD supplies optional package media. See the <a href="https://github.com/salvogendut/xiri/blob/main/docs/IRIX-RESOURCES.md#provenance-of-the-downloads-images">archive checksums and provenance</a> for the tested donor.</p>
+              <p>The operating-system CHD is 5.3 GiB, so put it on an FFS carrier disk. The following example uses NetBSD’s <code>nbmakefs</code> from the local cross-build tools; adjust its location and the extracted CHD path for your workstation. Use a new work directory and output file. This copies the standalone base image; export a stopped donor’s merged disk first if you want changes from an emulator overlay.</p>
+              <p class="command-context">On a Linux workstation, from the Xiri checkout:</p>
+              <pre tabindex="0"><code class="language-sh">mkdir .work/superirix-media
+cp --reflink=auto "$HOME/Downloads/irix65_chd/irix65.chd" .work/superirix-media/
+.work/netbsd-irix-build/tools/bin/nbmakefs -t ffs -B be -o version=2 \
+  .work/superirix-donor.ffs .work/superirix-media</code></pre>
+              <p>Halt the guest and stop the emulator, then attach <code>.work/superirix-donor.ffs</code> as a <strong>hard disk at SCSI ID 2</strong>. In standalone IRIS, use this file’s absolute path in the <code>scsi0/t2</code> entry above. Restart XiriBSD from the system disk at ID 1.</p>
+              <p class="command-context">In the guest root shell, with the carrier disk identified as <code>sd1</code>:</p>
+              <pre tabindex="0"><code class="language-sh">mkdir -p /mnt/donors
+mount -r -t ffs /dev/sd1c /mnt/donors
+/usr/local/sbin/xiriprep --check --source /mnt/donors/irix65.chd --user xiritest
+/usr/local/sbin/xiriprep --source /mnt/donors/irix65.chd --user xiritest</code></pre>
+              <p>Look for <code>Identified IRIX 6.5.22m</code> and <code>Desktop profile: 6.5.22m.plan</code>. After a successful import, run <code>umount /mnt/donors</code>. The desktop import selects its planned components; it does not copy every application or the donor user’s home directory.</p>
             </section>
 
             <section class="guide-section" id="first-login" aria-labelledby="login-title">
@@ -216,9 +247,9 @@ mount -r -t ffs /dev/sd1c /mnt/donors
               <p>The first import installs the shared desktop and fonts and prepares the native services. Remove the donor media and reboot before the selected account’s first 4Dwm login.</p>
               <p class="command-context">In the guest root shell:</p>
               <pre tabindex="0"><code class="language-sh">shutdown -r now</code></pre>
-              <p>Boot from the installed system disk and log in at xdm with the selected account’s usual credentials. On both tested Indys, <strong>4Dwm opens at 1280×1024</strong> with Toolchest, Icon Catalog, winterm, and xclock.</p>
+              <p>Boot from the installed system disk and log in at xdm with the selected account’s usual credentials. The tested Indy installations with 6.5.22f, 6.5.22m, and 6.5.30f donors reach <strong>4Dwm at 1280×1024</strong> with Toolchest, Icon Catalog, winterm, and xclock.</p>
               <p>To check the Screen Saver, open its control panel, select <strong>Qix</strong>, and click <strong>Demo</strong>. Press <kbd>Space</kbd> to return. A user who kept the default XiriBSD session still gets ctwm.</p>
-              <p><a href="https://github.com/salvogendut/xiri/blob/main/docs/results/2026-11-27-xiriprep-desktop.md">Read the qualification results and screenshots for both releases</a>.</p>
+              <p>See the <a href="https://github.com/salvogendut/xiri/blob/main/docs/results/2026-11-27-xiriprep-desktop.md">original reference-donor results</a> and the <a href="https://github.com/salvogendut/xiri/blob/main/docs/results/2026-11-27-owner-donors.md">additional donor results and screenshots</a>. The new checks cover persistent Qix settings and a separate native ctwm login. Optional xmahjongg installation and removal were also tested with the Indigo2 6.5.22f and Octane 6.5.30f donors; the SuperIRIX 6.5.22m test covers the desktop.</p>
             </section>
 
             <section class="guide-section" id="accounts-and-storage" aria-labelledby="accounts-title">
@@ -227,9 +258,9 @@ mount -r -t ffs /dev/sd1c /mnt/donors
                 <li><strong>Existing account:</strong> its native home and password are preserved. A previous <code>~/.xsession</code> is saved as <code>~/.xsession.before-xiriprep</code>; repeating the command preserves that backup. Restore it to return to the previous session. Other logins keep their current desktops.</li>
                 <li><strong>Missing account:</strong> after identifying the donor, xiriprep offers to create the user. The default is <strong>No</strong>. If you choose <strong>Yes</strong>, it creates an ordinary user with home <code>/usr/people/&lt;login&gt;</code> and prompts for a password. Create the account beforehand for non-interactive use.</li>
                 <li><strong>Another user:</strong> repeat xiriprep with the intended login. A matching shared installation is reused.</li>
-                <li><strong>Another IRIX release:</strong> use a separate system disk. Do not combine the 6.5.22f and 6.5.30f donor installations.</li>
+                <li><strong>Another IRIX release:</strong> use a separate system disk. Keep 6.5.22f, 6.5.22m, and 6.5.30f separate. The tools reject a donor release that conflicts with an existing desktop receipt.</li>
               </ul>
-              <p>The reader verifies the required executables, libraries, fonts, resources, and catalog links in private staging directories before publishing the desktop. Allow the following free space:</p>
+              <p>The reader identifies the release and desktop profile from the combined fingerprints of the donor’s shell, 4Dwm, and Toolchest. The shell and 4Dwm alone are identical on the tested 6.5.22f and 6.5.22m disks. It then verifies the required executables, libraries, fonts, resources, and catalog links in private staging directories before publishing the desktop. Allow the following free space:</p>
               <div class="table-scroll" tabindex="0" role="region" aria-label="Free space for donor import">
                 <table class="guide-table">
                   <thead><tr><th scope="col">Filesystem containing</th><th scope="col">Free space</th></tr></thead>
@@ -241,7 +272,7 @@ mount -r -t ffs /dev/sd1c /mnt/donors
                 </table>
               </div>
               <p>The shared desktop lives at <code>/emul/irix</code> and its fonts at <code>/usr/local/share/xiri/fonts</code>. On a typical single-filesystem Indy install, the staging tree is renamed into place. If verification fails, correct the donor or free the requested space and rerun.</p>
-              <p>Browser, freeware, and audio packages have separate <a href="https://github.com/salvogendut/xiri/blob/main/docs/IRIX-SOFTWARE.md">installation instructions</a>. Independently installed donor layouts need further qualification; the tested reference donors do not establish compatibility with every IRIX installation.</p>
+              <p>Browser, freeware, and audio packages have separate <a href="https://github.com/salvogendut/xiri/blob/main/docs/IRIX-SOFTWARE.md">installation instructions</a>. The five profiles cover the tested donors’ desktop resources. Newly encountered library or optional-component combinations need their own audit and, where necessary, another import profile.</p>
             </section>
 
             <section class="guide-section" id="build-media" aria-labelledby="build-title">
@@ -251,7 +282,7 @@ mount -r -t ffs /dev/sd1c /mnt/donors
               <pre tabindex="0"><code class="language-sh">scripts/build-xiribsd-iso.py --work .work/native-indy \
     --output .work/images/xiribsd-indy-native.iso</code></pre>
               <p>The output filename is selectable. When using this example, attach the generated <code>xiribsd-indy-native.iso</code> as the installer CD in the fresh-install steps above.</p>
-              <p>The builder records its source revisions and recipe hashes in <code>.work/native-indy/sources.json</code> and reuses that lock on retry. Archive it alongside the ISO. For the qualified installer with on-target desktop import, use <a href="https://github.com/salvogendut/xiri/blob/main/lab/native-iso/indy-xiriprep-20261127.json">the desktop installer lock</a> with the Xiri recipe revision recorded in its <code>xiri</code> field, passing the lock file with <code>--lock</code>.</p>
+              <p>The builder records its source revisions and recipe hashes in <code>.work/native-indy/sources.json</code> and reuses that lock on retry. Archive it alongside the ISO. To reproduce the current installer with all five profiles, use <a href="https://github.com/salvogendut/xiri/blob/main/lab/native-iso/indy-owner-donors-20261127.json">the five-profile installer lock</a> with the Xiri recipe revision recorded in its <code>xiri</code> field, passing the lock file with <code>--lock</code>. The earlier <code>indy-xiriprep-20261127.json</code> lock reproduces the two-profile installer.</p>
               <p>See the <a href="https://github.com/salvogendut/xiri/blob/main/docs/XIRI-INSTALLATION.md#build-the-native-indy-iso">full build instructions</a> for source preparation, toolchain reuse, and Toolbox options.</p>
               <h3>Rebuild the tools CD</h3>
               <p class="command-context">On the workstation, from the Xiri checkout:</p>
@@ -265,6 +296,7 @@ mount -r -t ffs /dev/sd1c /mnt/donors
               <ul>
                 <li><a href="https://github.com/salvogendut/xiri/blob/main/docs/INSTALL-INDY-PRISMATIC.md">Install XiriBSD on an Indy in Prismatic</a></li>
                 <li><a href="https://github.com/salvogendut/xiri/blob/main/docs/XIRIPREP.md">Prepare an IRIX desktop account with xiriprep</a></li>
+                <li><a href="https://github.com/salvogendut/xiri/blob/main/docs/results/2026-11-27-owner-donors.md">Independent donor qualification and tools update results</a></li>
                 <li><a href="https://github.com/salvogendut/xiri/blob/main/docs/XIRI-INSTALLATION.md">Reproducible Xiri installation and native ISO builds</a></li>
                 <li><a href="https://github.com/salvogendut/xiri/blob/main/docs/NATIVE-PACKAGE.md#switching-between-the-stock-and-xiri-kernels">Stock-kernel recovery and rollback</a></li>
                 <li><a href="https://github.com/salvogendut/iris/blob/xiri/HELP.md">Standalone IRIS configuration, keyboard controls, and validation</a></li>

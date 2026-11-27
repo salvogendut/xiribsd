@@ -7,8 +7,8 @@ release files or download links. Links to externally hosted XiriBSD ISOs
 will be added later; release images will not be stored on `kimcarsons`.
 
 The project description and platform summary come from Xiri's
-[README](https://github.com/salvogendut/xiri/blob/99c2e90715eae938c6f4d858853e33e875cdaf72/README.md)
-and [architecture guide](https://github.com/salvogendut/xiri/blob/99c2e90715eae938c6f4d858853e33e875cdaf72/docs/ARCHITECTURE.md),
+[README](https://github.com/salvogendut/xiri/blob/5ed2e28fab91b6232de561e0cad8e101ddf5eeba/README.md)
+and [architecture guide](https://github.com/salvogendut/xiri/blob/5ed2e28fab91b6232de561e0cad8e101ddf5eeba/docs/ARCHITECTURE.md),
 reviewed on 2026-11-27. The page distinguishes emulation results from
 physical-hardware qualification and future distribution releases.
 `public/assets/xiri-logo.png` is an unchanged copy of `../xiri/xiri-logo.png`.
@@ -29,8 +29,11 @@ links each image to its full-size original.
 `public/installation.html` covers the standard native XiriBSD install followed
 by `xiriprep` on the target. The homepage links it from the navigation,
 project description and footer. It covers a fresh Indy in Prismatic or standalone IRIS, the
-tools CD for an earlier native install, CHD and raw donor imports, account
-and session behavior, storage requirements and workstation build commands.
+tools CD and rollback for an earlier native or xiriprep install, all five donor
+profiles, CHD and raw donor imports, the FFS carrier for the 5.3 GiB SuperIRIX
+CHD, account and session behavior, storage requirements and workstation build
+commands. Native installation needs no donor; original IRIX executables,
+libraries, fonts and desktop artwork are imported afterward.
 
 Adapted on 2026-11-27 from the current `../xiri` working tree:
 
@@ -38,9 +41,12 @@ Adapted on 2026-11-27 from the current `../xiri` working tree:
 - `docs/XIRIPREP.md`
 - `docs/XIRI-INSTALLATION.md`
 - `docs/results/2026-11-27-xiriprep-desktop.md` for qualification scope
+- `docs/results/2026-11-27-owner-donors.md` for additional donors, optional
+  software checks and tools update/rollback coverage
+- `docs/IRIX-RESOURCES.md` for SuperIRIX provenance
 
 The sources match Xiri commit
-[`5ed2a09`](https://github.com/salvogendut/xiri/commit/5ed2a09aa3df810e550b9451826a2cedca34187d).
+[`5ed2e28`](https://github.com/salvogendut/xiri/commit/5ed2e28fab91b6232de561e0cad8e101ddf5eeba).
 Links on the page point to the source repository's `main` branch. When refreshing the page, recheck the
 media filenames, SCSI IDs, command examples and qualified donor releases
 against those guides. Development image names are not public download links;
