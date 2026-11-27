@@ -2,9 +2,10 @@
 
 Static scaffolding for `https://xiribsd.org`, hosted by Apache on
 `kimcarsons`. Serve only `public/`; it needs no build tools, JavaScript,
-database or third-party assets. The Downloads section deliberately has no
-release files or download links. Links to externally hosted XiriBSD ISOs
-will be added later; release images will not be stored on `kimcarsons`.
+database or third-party assets. The Downloads section links to the development
+ISO `xiribsd-indy-donor-profiles-11.99.11.iso` through the owner-supplied
+BitTorrent magnet URI (`btih:beb9fb50bfddc518fb189b913a6433492116617c`).
+Release images are distributed externally and are not stored on `kimcarsons`.
 
 The project description and platform summary come from Xiri's
 [README](https://github.com/salvogendut/xiri/blob/5ed2e28fab91b6232de561e0cad8e101ddf5eeba/README.md)
@@ -49,8 +50,9 @@ The sources match Xiri commit
 [`5ed2e28`](https://github.com/salvogendut/xiri/commit/5ed2e28fab91b6232de561e0cad8e101ddf5eeba).
 Links on the page point to the source repository's `main` branch. When refreshing the page, recheck the
 media filenames, SCSI IDs, command examples and qualified donor releases
-against those guides. Development image names are not public download links;
-the Downloads section stays unpopulated until external release URLs exist.
+against those guides. Only media with an explicitly supplied release URL or
+magnet URI should be linked in Downloads; other development filenames do not
+imply that those images are available publicly.
 
 The standalone IRIS route was added from `../iris` at commit
 [`727f877`](https://github.com/salvogendut/iris/commit/727f877098ebf4002689c466668992f1c1092100),
@@ -275,7 +277,7 @@ ssh kimcarsons 'restorecon -RF /var/www/xiribsd.org'
 
 No Apache reload is needed for static content. Keep the production HTTPS
 configuration and renewal hooks in place. Release ISO/CHD images are hosted
-externally. Once releases and checksums are available, publish their download
-links in the Downloads section. Do not upload release images to `kimcarsons`
-or commit them to this source repository. Keep the section unpopulated until
-the external download URLs are ready.
+externally. Publish supplied download URLs or magnet URIs in Downloads and
+add checksums when available. Do not upload release images to `kimcarsons`
+or commit them to this source repository. The current ISO uses the magnet
+link recorded above; add other media only when its download link is ready.

@@ -65,10 +65,11 @@ strong { font-weight: 550; color: var(--text); }
 .screenshot figcaption { padding: 1rem 0.5rem 0.5rem; }
 .screenshot h3 { margin: 0; font-size: 1.125rem; font-weight: 600; letter-spacing: 0; }
 .screenshot figcaption p { margin-top: 0.3rem; color: var(--muted); font-size: 0.9375rem; }
-.download-placeholder { border: 2px solid; border-color: #f1f1df #103b2c #103b2c #f1f1df; border-radius: 5px; padding: 2rem; background: linear-gradient(120deg, #d9dccf, #bdccba); color: #233b30; box-shadow: 3px 4px 0 #12392b; }
+.download-placeholder { min-width: 0; border: 2px solid; border-color: #f1f1df #103b2c #103b2c #f1f1df; border-radius: 5px; padding: 2rem; background: linear-gradient(120deg, #d9dccf, #bdccba); color: #233b30; box-shadow: 3px 4px 0 #12392b; }
 .release-status { display: inline-block; font-size: 0.875rem; color: #392d19; background: #f1d5a1; border: 1px solid; border-color: #9b8b69 #f9ebcb #f9ebcb #9b8b69; border-radius: 2px; padding: 0.2rem 0.65rem; }
 h3 { margin: 1.25rem 0 0.65rem; font-size: 1.4rem; font-weight: 550; letter-spacing: -0.02em; }
-.download-placeholder p { color: #3b5042; max-width: 30rem; }
+.download-placeholder p { color: #3b5042; max-width: 30rem; overflow-wrap: anywhere; }
+.download-placeholder p + p { margin-top: 0.75rem; }
 .download-placeholder a:hover { color: #153f32; }
 .download-placeholder a:focus-visible { outline-color: #234f3c; }
 footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; border-top: 1px solid var(--line); margin: 0 calc(-1 * var(--gutter)); padding: 2rem var(--gutter) 2.5rem; background: #11372c; border-radius: 0 0 8px 8px; color: var(--muted); font-size: 0.875rem; }
