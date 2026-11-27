@@ -35,6 +35,10 @@ architecture, image formats and importer requirements. Read
 [the implementation plan](IMPLEMENTATION.md) for the proposed command
 interface, build stages, exact integration points and release checks.
 
+The [website scaffold](website/README.md) contains the static `xiribsd.org`
+landing page, Xiri logo, future Downloads section and Apache virtual-host
+configuration for `kimcarsons`.
+
 ```mermaid
 flowchart TD
     A[Source lock or upstream update] --> B[NetBSD src and xsrc plus Xiri runtime]
