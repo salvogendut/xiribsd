@@ -74,6 +74,38 @@ h3 { margin: 1.25rem 0 0.65rem; font-size: 1.4rem; font-weight: 550; letter-spac
 footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; border-top: 1px solid var(--line); margin: 0 calc(-1 * var(--gutter)); padding: 2rem var(--gutter) 2.5rem; background: #11372c; border-radius: 0 0 8px 8px; color: var(--muted); font-size: 0.875rem; }
 .footer-brand { color: var(--text); font-weight: 650; margin-right: 0.8rem; }
 
+.site-header nav a[aria-current="page"] { background: #f0d5a0; color: #18352b; }
+.guide { padding-bottom: 3rem; }
+.guide-header { padding: 3.5rem 0 2.5rem; }
+.guide-summary { max-width: 48rem; margin-top: 1.5rem; color: var(--muted); font-size: 1.2rem; }
+.guide-meta { margin-top: 1.25rem; color: var(--muted); font-size: 0.875rem; }
+.guide-notice { margin-top: 1.5rem; padding: 1.25rem 1.5rem; background: #163e35; border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 3px; }
+.guide-layout { display: grid; grid-template-columns: 14rem minmax(0, 1fr); gap: 3rem; align-items: start; }
+.guide-toc { display: block; position: sticky; top: 2rem; padding: 1.25rem; background: #163e35; border: 1px solid var(--line); border-radius: 4px; }
+.guide-toc > p { font-weight: 600; }
+.guide-toc ol { margin: 0.75rem 0 0; padding-left: 1.2rem; color: var(--muted); }
+.guide-toc a { display: block; padding: 0.35rem 0; font-size: 0.9375rem; }
+.guide-toc a:hover { text-decoration: underline; }
+.guide-content { min-width: 0; }
+.guide-section { padding: 2.5rem 0; border-top: 1px solid var(--line); scroll-margin-top: 2rem; }
+.guide-section:first-child { padding-top: 0; border-top: 0; }
+.guide-section h2 { margin-bottom: 1.25rem; font-size: clamp(1.6rem, 3vw, 2rem); }
+.guide-section h3 { margin: 1.75rem 0 0.75rem; font-size: 1.25rem; }
+.guide-section p + p { margin-top: 1rem; }
+.guide-section ul, .guide-section ol { padding-left: 1.5rem; margin: 1.25rem 0; }
+.guide-section li + li { margin-top: 0.75rem; }
+.guide p, .guide li, .guide td { overflow-wrap: anywhere; }
+.guide code { font-family: ui-monospace, "Cascadia Code", monospace; font-size: 0.9em; }
+.guide kbd { padding: 0.1rem 0.35rem; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 3px; background: #163e35; font: inherit; font-size: 0.9em; }
+.guide .command-context { margin-top: 1.25rem; color: var(--muted); font-size: 0.9375rem; }
+.guide pre { max-width: 100%; margin: 0.65rem 0 1.25rem; padding: 1rem; overflow-x: auto; border: 1px solid var(--line); border-radius: 4px; background: #0b1a19; font-size: 0.9375rem; line-height: 1.65; }
+.guide pre code { font-size: 1em; overflow-wrap: normal; }
+.guide pre:focus-visible, .table-scroll:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.table-scroll { overflow-x: auto; margin: 1.25rem 0; }
+.guide-table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
+.guide-table th, .guide-table td { padding: 0.8rem; border: 1px solid var(--line); text-align: left; vertical-align: top; }
+.guide-table th { background: #163e35; font-weight: 600; }
+
 @media (max-width: 800px) {
   :root { --gutter: 1.5rem; }
   body { padding: 1rem 0.75rem; }
@@ -83,6 +115,10 @@ footer { display: flex; align-items: center; justify-content: space-between; fle
   .project, .downloads, .section-heading { gap: 2rem; grid-template-columns: 1fr 1.35fr; }
   .section { padding: 3rem 0; }
   .machine-list li { font-size: 1.25rem; }
+  .guide-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+  .guide-toc { position: static; }
+  .guide-toc ol { columns: 2; column-gap: 2rem; }
+  .guide-toc li { break-inside: avoid; }
 }
 
 @media (max-width: 600px) {
@@ -98,4 +134,9 @@ footer { display: flex; align-items: center; justify-content: space-between; fle
   .screenshot-grid { grid-template-columns: 1fr; margin-top: 1.5rem; }
   .download-placeholder { padding: 1.5rem; }
   footer { align-items: flex-start; flex-direction: column; }
+  .guide-header { padding-top: 2.5rem; }
+  .guide-header h1 { font-size: clamp(2rem, 8.5vw, 3rem); }
+  .guide-notice { padding: 1rem; }
+  .guide-toc ol { columns: 1; }
+  .guide-section { padding: 2rem 0; }
 }

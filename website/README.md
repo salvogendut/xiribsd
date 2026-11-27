@@ -24,6 +24,28 @@ are unchanged copies of the screenshots taken on 2026-11-27 at 07:55:47,
 07:55:58, 07:56:27, and 07:57:54, in that order. The gallery uses two columns on larger screens and one on phones, and
 links each image to its full-size original.
 
+## Installation howto
+
+`public/installation.html` covers the standard native XiriBSD install followed
+by `xiriprep` on the target. The homepage links it from the navigation,
+project description and footer. It covers a fresh Indy in Prismatic, the
+tools CD for an earlier native install, CHD and raw donor imports, account
+and session behavior, storage requirements and workstation build commands.
+
+Adapted on 2026-11-27 from the current `../xiri` working tree:
+
+- `docs/INSTALL-INDY-PRISMATIC.md`
+- `docs/XIRIPREP.md`
+- `docs/XIRI-INSTALLATION.md`
+- `docs/results/2026-11-27-xiriprep-desktop.md` for qualification scope
+
+The sources match Xiri commit
+[`5ed2a09`](https://github.com/salvogendut/xiri/commit/5ed2a09aa3df810e550b9451826a2cedca34187d).
+Links on the page point to the source repository's `main` branch. When refreshing the page, recheck the
+media filenames, SCSI IDs, command examples and qualified donor releases
+against those guides. Development image names are not public download links;
+the Downloads section stays unpopulated until external release URLs exist.
+
 ## Preview
 
 From the repository root:

@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#24594f">
+    <meta name="description" content="Install XiriBSD on an emulated SGI Indy in Prismatic, then use xiriprep to prepare an IRIX desktop from your own installed donor image.">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Installation howto — XiriBSD">
+    <meta property="og:description" content="From a fresh Indy disk to native NetBSD and an IRIX desktop: Prismatic setup, installation, and xiriprep donor import.">
+    <meta property="og:url" content="https://xiribsd.org/installation.html">
+    <meta property="og:image" content="https://xiribsd.org/assets/xiri-logo.png">
+    <link rel="canonical" href="https://xiribsd.org/installation.html">
+    <link rel="icon" href="assets/xiri-logo.png" type="image/png">
+    <link rel="stylesheet" href="assets/site.css">
+    <title>Installation howto — XiriBSD</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="page">
+      <header class="site-header">
+        <a class="wordmark" href="./" aria-label="XiriBSD home">Xiri<span>BSD</span></a>
+        <nav aria-label="Main navigation">
+          <a href="./#project">The project</a>
+          <a href="installation.html" aria-current="page">Installation</a>
+          <a href="./#screenshots">Screenshots</a>
+          <a href="./#downloads">Downloads</a>
+          <a href="https://github.com/salvogendut/xiribsd">GitHub</a>
+        </nav>
+      </header>
+
+      <main id="main" class="guide">
+        <header class="guide-header">
+          <p class="eyebrow">SGI Indy · Prismatic</p>
+          <h1>Installation howto</h1>
+          <p class="guide-summary">Install native XiriBSD first. Then run <code>xiriprep</code> on the installed system to prepare an IRIX desktop from your own donor image.</p>
+          <p class="guide-meta">Updated <time datetime="2026-11-27">27 November 2026</time> · Based on the Xiri installation documentation</p>
+          <div class="guide-notice">
+            <p><strong>Development media.</strong> The filenames below identify current development builds. Public release downloads are not available yet; the <a href="./#downloads">Downloads section</a> will link to externally hosted images when they are ready. This guide covers Indy emulation; physical workstation testing is still ahead.</p>
+          </div>
+        </header>
+
+        <div class="guide-layout">
+          <nav class="guide-toc" aria-label="Installation guide contents">
+            <p>On this page</p>
+            <ol>
+              <li><a href="#before-you-start">Before you start</a></li>
+              <li><a href="#fresh-install">Install on a fresh Indy</a></li>
+              <li><a href="#existing-indy">Use an existing Indy</a></li>
+              <li><a href="#import-donor">Import your IRIX desktop</a></li>
+              <li><a href="#first-login">Reboot and log in</a></li>
+              <li><a href="#accounts-and-storage">Accounts and storage</a></li>
+              <li><a href="#build-media">Build the media</a></li>
+              <li><a href="#source-docs">Source documentation</a></li>
+            </ol>
+          </nav>
+
+          <article class="guide-content" aria-label="XiriBSD installation instructions">
+            <section class="guide-section" id="before-you-start" aria-labelledby="before-title">
+              <h2 id="before-title">Before you start</h2>
+              <p>The native installer provides NetBSD, the Xiri compatibility module, and the tools needed to import the desktop. The first login opens native <strong>ctwm</strong>. The original IRIX programs and fonts come from your own installed IRIX disk image afterward.</p>
+              <ul>
+                <li><a href="https://github.com/salvogendut/prismatic">Prismatic</a>, configured as an Indy with an R4400 or R5000 CPU, 256 MiB of RAM, and Newport graphics.</li>
+                <li>The installer <code>xiribsd-indy-xiriprep-11.99.11.iso</code>, found under <code>.work/images/</code> in the Xiri checkout for the documented build.</li>
+                <li>A new, blank 6144 MiB raw disk for XiriBSD. The installer will format this disk.</li>
+                <li>For the IRIX desktop, a standalone CHD or raw whole-disk image of your own installed IRIX <strong>6.5.22f</strong> or <strong>6.5.30f</strong> system.</li>
+              </ul>
+              <p>The same native installer serves both IRIX releases. Each installed system uses one donor release; keep a separate system disk for the other. The current qualification covers 6.5.22f on an R4400 and 6.5.30f on an R5000.</p>
+              <p>Already installed the earlier <code>xiribsd-indy-native-11.99.11.iso</code>? Keep your disk and follow <a href="#existing-indy">the tools-CD route</a>.</p>
+            </section>
+
+            <section class="guide-section" id="fresh-install" aria-labelledby="fresh-title">
+              <h2 id="fresh-title">Install on a fresh Indy</h2>
+              <h3>Attach the disk and installer</h3>
+              <p>Start Prismatic and pause the machine. Open <kbd>F9</kbd> and set the following options:</p>
+              <div class="table-scroll" tabindex="0" role="region" aria-label="Prismatic installation settings">
+                <table class="guide-table">
+                  <thead><tr><th scope="col">Location</th><th scope="col">Settings</th></tr></thead>
+                  <tbody>
+                    <tr><th scope="row">General</th><td>Indy; R4400 or R5000; 256 MiB RAM; default Newport graphics; <strong>Graphics</strong> console; <strong>PROM boot: Keep existing</strong>.</td></tr>
+                    <tr><th scope="row">Media: SCSI ID 1</th><td>Choose <strong>New disk…</strong>, select <strong>Raw</strong>, enter <strong>6144 MiB</strong>, and choose a new filename such as <code>xiribsd-indy.raw</code>. Select <strong>Create disk and attach to draft</strong>.</td></tr>
+                    <tr><th scope="row">Media: SCSI ID 6</th><td>Attach <code>xiribsd-indy-xiriprep-11.99.11.iso</code> as the <strong>CD-ROM</strong>.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <h3>Boot the CD</h3>
+              <p>Save with <kbd>F9</kbd> and start with <kbd>Ctrl</kbd> + <kbd>P</kbd>. Click the guest display, press <kbd>Esc</kbd> during startup, and choose <strong>5 — Enter Command Monitor</strong>. If the blank disk first reports “Unable to boot”, press <kbd>Enter</kbd> to reach the menu.</p>
+              <p class="command-context">At the Indy PROM’s <code>&gt;&gt;</code> prompt:</p>
+              <pre tabindex="0"><code class="language-text">boot -f scsi(0)cdrom(6)rdisk(0)partition(8)ip2xboot</code></pre>
+              <p>The <code>6</code> matches the CD-ROM’s SCSI ID. If you attached it at ID 4, use <code>cdrom(4)</code> instead. The installer displays Newport’s black-to-green gradient.</p>
+              <h3>Run sysinst</h3>
+              <ol>
+                <li>Choose <strong>Install NetBSD to hard disk</strong>. Confirm that <code>sd0</code> is your new <strong>6 GiB</strong> disk before formatting it, then accept the default partition sizes.</li>
+                <li>Choose <strong>Full installation</strong> and <strong>CD-ROM / DVD</strong>. If prompted for the set directory, enter <code>sgimips/binary/sets</code>. Wait for all <strong>15 sets</strong> to unpack.</li>
+                <li>Set the root password. In the configuration menu, set <strong>Enable xdm (X Display Manager)</strong> to <strong>YES</strong> and create your regular login account.</li>
+                <li>Select <strong>Finished configuring</strong>, then <strong>Exit Install System</strong>. At the installer’s <code>#</code> prompt, enter <code>halt</code> and wait for the disk to unmount.</li>
+              </ol>
+              <h3>Boot the installed system</h3>
+              <p>In <strong>F9 / Media</strong>, disconnect the CD at ID 6 and leave the disk at ID 1. Select <strong>F9 / General / PROM boot / NetBSD</strong>, save, and start the Indy. Choose <strong>Start System</strong> if the PROM menu appears.</p>
+              <p class="command-context">For a manual disk boot, use the Indy PROM’s <code>&gt;&gt;</code> prompt:</p>
+              <pre tabindex="0"><code class="language-text">setenv OSLoader boot
+setenv OSLoadFilename netbsd.boot
+setenv OSLoadOptions auto
+boot</code></pre>
+              <p>The installed kernel draws the SGI-style frame around the boot messages before xdm starts, even without an IRIX donor. The first boot builds the font cache. Log in at xdm with the account you created; you should reach a <strong>1280×1024 ctwm desktop</strong> with a terminal.</p>
+              <p>This installer includes <code>xiriprep</code>. Continue to <a href="#import-donor">donor import</a> to select the IRIX desktop for your account.</p>
+            </section>
+
+            <section class="guide-section" id="existing-indy" aria-labelledby="existing-title">
+              <h2 id="existing-title">Use an existing Indy</h2>
+              <p>If your disk was installed from the earlier <code>xiribsd-indy-native-11.99.11.iso</code>, add the tools without reinstalling. Boot that disk at SCSI ID 1. Attach <code>.work/images/xiriprep-indy-desktop-tools.iso</code> through <strong>F9 / Media / SCSI ID 6 / CD-ROM</strong>.</p>
+              <p class="command-context">In a root shell inside the XiriBSD guest:</p>
+              <pre tabindex="0"><code class="language-sh">mkdir -p /cdrom
+mount -r -t cd9660 /dev/cd0a /cdrom
+(cd / &amp;&amp; tar -xzpf /cdrom/xiriprep.tgz)
+umount /cdrom</code></pre>
+              <p>Eject the tools CD, then attach your donor media. The current <code>xiribsd-indy-xiriprep-11.99.11.iso</code> already includes these tools, so this extra step is only for the earlier installation.</p>
+            </section>
+
+            <section class="guide-section" id="import-donor" aria-labelledby="donor-title">
+              <h2 id="donor-title">Import your IRIX desktop</h2>
+              <p>Run <code>/usr/local/sbin/xiriprep</code> <strong>as root inside XiriBSD</strong>. Supply the path to an image <strong>file</strong> on a mounted filesystem. In the examples, replace <code>xiritest</code> with the ordinary NetBSD login you want to prepare.</p>
+              <div class="guide-notice">
+                <p><strong>Use a complete donor export.</strong> If the IRIX installation lives in an emulator overlay, stop the emulator and export the merged disk first. A large raw base file can still contain an empty SGI volume header. See the <a href="https://github.com/salvogendut/xiri/blob/main/profiles/README.md">donor export and profile guide</a>.</p>
+              </div>
+              <h3>Option A: CHD on a data CD</h3>
+              <p>Create a data ISO with your standalone donor CHD. Choose a new output filename and replace the path after the equals sign. The file inside the CD will be named <code>IRIX donor.chd</code>.</p>
+              <p class="command-context">On your workstation:</p>
+              <pre tabindex="0"><code class="language-sh">genisoimage -R -V OWNER_DONOR -o irix-donor.iso -graft-points \
+  'IRIX donor.chd=/absolute/path/to/standalone.chd'</code></pre>
+              <p>Attach <code>irix-donor.iso</code> to Prismatic’s CD-ROM slot, normally SCSI ID 6.</p>
+              <p class="command-context">In the guest root shell:</p>
+              <pre tabindex="0"><code class="language-sh">mkdir -p /cdrom
+mount -r -t cd9660 /dev/cd0a /cdrom
+/usr/local/sbin/xiriprep --check --source '/cdrom/IRIX donor.chd' --user xiritest
+/usr/local/sbin/xiriprep --source '/cdrom/IRIX donor.chd' --user xiritest</code></pre>
+              <p>The optional <code>--check</code> identifies the release and reports the account status without changing the donor, account, or session. The command without <code>--check</code> performs the import. Once it reports that the desktop is selected, run <code>umount /cdrom</code> and eject the CD.</p>
+              <h3>Option B: raw image on a second disk</h3>
+              <p>The tested setup used a second disk at SCSI ID 2, with an FFS filesystem on <code>/dev/sd1c</code> containing the exported IRIX disk as a regular file. Use the device and filename that match your disk.</p>
+              <p class="command-context">In the guest root shell:</p>
+              <pre tabindex="0"><code class="language-sh">mkdir -p /mnt/donors
+mount -r -t ffs /dev/sd1c /mnt/donors
+/usr/local/sbin/xiriprep --check --source '/mnt/donors/IRIX backup.img' --user xiritest
+/usr/local/sbin/xiriprep --source '/mnt/donors/IRIX backup.img' --user xiritest</code></pre>
+              <p>After a successful import, run <code>umount /mnt/donors</code>. The reader detects the format by content: either medium can contain a CHD or a raw whole-disk image. It reads the mounted file directly, including compressed CHD data.</p>
+            </section>
+
+            <section class="guide-section" id="first-login" aria-labelledby="login-title">
+              <h2 id="login-title">Reboot and log in</h2>
+              <p>The first import installs the shared desktop and fonts and prepares the native services. Remove the donor media and reboot before the selected account’s first 4Dwm login.</p>
+              <p class="command-context">In the guest root shell:</p>
+              <pre tabindex="0"><code class="language-sh">shutdown -r now</code></pre>
+              <p>Boot from the installed system disk and log in at xdm with the selected account’s usual credentials. On both tested Indys, <strong>4Dwm opens at 1280×1024</strong> with Toolchest, Icon Catalog, winterm, and xclock.</p>
+              <p>To check the Screen Saver, open its control panel, select <strong>Qix</strong>, and click <strong>Demo</strong>. Press <kbd>Space</kbd> to return. A user who kept the default XiriBSD session still gets ctwm.</p>
+              <p><a href="https://github.com/salvogendut/xiri/blob/main/docs/results/2026-11-27-xiriprep-desktop.md">Read the qualification results and screenshots for both releases</a>.</p>
+            </section>
+
+            <section class="guide-section" id="accounts-and-storage" aria-labelledby="accounts-title">
+              <h2 id="accounts-title">Accounts and storage</h2>
+              <ul>
+                <li><strong>Existing account:</strong> its native home and password are preserved. A previous <code>~/.xsession</code> is saved as <code>~/.xsession.before-xiriprep</code>; repeating the command preserves that backup. Restore it to return to the previous session. Other logins keep their current desktops.</li>
+                <li><strong>Missing account:</strong> after identifying the donor, xiriprep offers to create the user. The default is <strong>No</strong>. If you choose <strong>Yes</strong>, it creates an ordinary user with home <code>/usr/people/&lt;login&gt;</code> and prompts for a password. Create the account beforehand for non-interactive use.</li>
+                <li><strong>Another user:</strong> repeat xiriprep with the intended login. A matching shared installation is reused.</li>
+                <li><strong>Another IRIX release:</strong> use a separate system disk. Do not combine the 6.5.22f and 6.5.30f donor installations.</li>
+              </ul>
+              <p>The reader verifies the required executables, libraries, fonts, resources, and catalog links in private staging directories before publishing the desktop. Allow the following free space:</p>
+              <div class="table-scroll" tabindex="0" role="region" aria-label="Free space for donor import">
+                <table class="guide-table">
+                  <thead><tr><th scope="col">Filesystem containing</th><th scope="col">Free space</th></tr></thead>
+                  <tbody>
+                    <tr><th scope="row"><code>/var/db</code></th><td>192 MiB</td></tr>
+                    <tr><th scope="row"><code>/emul</code></th><td>184 MiB</td></tr>
+                    <tr><th scope="row"><code>/usr/local/share/xiri</code></th><td>8 MiB</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>The shared desktop lives at <code>/emul/irix</code> and its fonts at <code>/usr/local/share/xiri/fonts</code>. On a typical single-filesystem Indy install, the staging tree is renamed into place. If verification fails, correct the donor or free the requested space and rerun.</p>
+              <p>Browser, freeware, and audio packages have separate <a href="https://github.com/salvogendut/xiri/blob/main/docs/IRIX-SOFTWARE.md">installation instructions</a>. Independently installed donor layouts need further qualification; the tested reference donors do not establish compatibility with every IRIX installation.</p>
+            </section>
+
+            <section class="guide-section" id="build-media" aria-labelledby="build-title">
+              <h2 id="build-title">Build the media</h2>
+              <p>Developers can build the native ISO from the Xiri checkout on a Linux workstation. The documented requirements include Python 3.11+, Git 2.38+, CMake 3.19+, <code>genisoimage</code>, <code>isoinfo</code>, C and C++ compilers, the NetBSD cross-build prerequisites, and access to the pinned libchdr, FAM, and pkgsrc sources.</p>
+              <p class="command-context">On the workstation, from the Xiri checkout:</p>
+              <pre tabindex="0"><code class="language-sh">scripts/build-xiribsd-iso.py --work .work/native-indy \
+    --output .work/images/xiribsd-indy-native.iso</code></pre>
+              <p>The output filename is selectable. When using this example, attach the generated <code>xiribsd-indy-native.iso</code> as the installer CD in the fresh-install steps above.</p>
+              <p>The builder records its source revisions and recipe hashes in <code>.work/native-indy/sources.json</code> and reuses that lock on retry. Archive it alongside the ISO. For the qualified installer with on-target desktop import, use <a href="https://github.com/salvogendut/xiri/blob/main/lab/native-iso/indy-xiriprep-20261127.json">the desktop installer lock</a> with the Xiri recipe revision recorded in its <code>xiri</code> field, passing the lock file with <code>--lock</code>.</p>
+              <p>See the <a href="https://github.com/salvogendut/xiri/blob/main/docs/XIRI-INSTALLATION.md#build-the-native-indy-iso">full build instructions</a> for source preparation, toolchain reuse, and Toolbox options.</p>
+              <h3>Rebuild the tools CD</h3>
+              <p class="command-context">On the workstation, from the Xiri checkout:</p>
+              <pre tabindex="0"><code class="language-sh">python3 scripts/package-xiriprep-tools.py installer.iso tools.iso</code></pre>
+              <p>Use a current installer for <code>installer.iso</code> and a new output path for <code>tools.iso</code>. The installer and tools CD contain native components and release inventories. The original IRIX desktop comes from the owner’s donor. The installed reader’s source archive is <code>/usr/local/share/xiri/xiriprep-source.tgz</code>.</p>
+            </section>
+
+            <section class="guide-section" id="source-docs" aria-labelledby="sources-title">
+              <h2 id="sources-title">Source documentation</h2>
+              <p>This howto adapts the Xiri installation documentation reviewed on 27 November 2026. Follow the source guides for subsequent changes and additional detail:</p>
+              <ul>
+                <li><a href="https://github.com/salvogendut/xiri/blob/main/docs/INSTALL-INDY-PRISMATIC.md">Install XiriBSD on an Indy in Prismatic</a></li>
+                <li><a href="https://github.com/salvogendut/xiri/blob/main/docs/XIRIPREP.md">Prepare an IRIX desktop account with xiriprep</a></li>
+                <li><a href="https://github.com/salvogendut/xiri/blob/main/docs/XIRI-INSTALLATION.md">Reproducible Xiri installation and native ISO builds</a></li>
+                <li><a href="https://github.com/salvogendut/xiri/blob/main/docs/NATIVE-PACKAGE.md#switching-between-the-stock-and-xiri-kernels">Stock-kernel recovery and rollback</a></li>
+              </ul>
+            </section>
+          </article>
+        </div>
+      </main>
+
+      <footer>
+        <p><span class="footer-brand">XiriBSD</span> A new chapter for SGI.</p>
+        <nav aria-label="Project resources">
+          <a href="./">Home</a>
+          <a href="https://github.com/salvogendut/xiribsd">Source</a>
+          <a href="https://github.com/salvogendut/xiribsd/blob/main/DESIGN.md">Documentation</a>
+          <a href="https://www.netbsd.org/">NetBSD</a>
+        </nav>
+      </footer>
+    </div>
+  </body>
+</html>

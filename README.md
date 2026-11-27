@@ -39,6 +39,9 @@ The [website scaffold](website/README.md) contains the static `xiribsd.org`
 landing page, Xiri logo, future Downloads section and Apache virtual-host
 configuration for `kimcarsons`. Release images will be hosted externally;
 the website will provide download links.
+The [installation howto](https://xiribsd.org/installation.html) follows the
+current Xiri workflow: install native XiriBSD, then prepare the selected
+IRIX desktop account with `xiriprep` on the installed system.
 
 ```mermaid
 flowchart TD
