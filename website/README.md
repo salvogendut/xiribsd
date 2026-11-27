@@ -2,9 +2,9 @@
 
 Static scaffolding for `https://xiribsd.org`, hosted by Apache on
 `kimcarsons`. Serve only `public/`; it needs no build tools, JavaScript,
-database or third-party assets. The Downloads section links to the development
-ISO `xiribsd-indy-donor-profiles-11.99.11.iso` through the owner-supplied
-BitTorrent magnet URI (`btih:beb9fb50bfddc518fb189b913a6433492116617c`).
+database or third-party assets. The Downloads section identifies the development
+ISO `xiribsd-indy-donor-profiles-11.99.11.iso`, but its download link has been
+temporarily removed at the owner's request.
 Release images are distributed externally and are not stored on `kimcarsons`.
 
 The homepage and installation guide carry the owner's IRIX disclaimer: the
@@ -285,5 +285,5 @@ No Apache reload is needed for static content. Keep the production HTTPS
 configuration and renewal hooks in place. Release ISO/CHD images are hosted
 externally. Publish supplied download URLs or magnet URIs in Downloads and
 add checksums when available. Do not upload release images to `kimcarsons`
-or commit them to this source repository. The current ISO uses the magnet
-link recorded above; add other media only when its download link is ready.
+or commit them to this source repository. Keep the current ISO download link
+unpublished until the owner requests restoring it.
