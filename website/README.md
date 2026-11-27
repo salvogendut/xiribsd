@@ -35,6 +35,12 @@ The site was deployed on 2026-11-27 to Rocky Linux 9.9. It uses its own
 existing virtual hosts and the default host remain unchanged. HTTPS is
 normally public; HTTP is opened only temporarily for certificate validation.
 
+Deployment validation confirmed that the public HTTPS page matches the
+repository, the existing Apache configurations are unchanged, and the
+scheduled Snap Certbot installation can complete a simulated renewal.
+The renewal hooks opened and closed HTTP successfully; both runtime and
+permanent firewall checks showed HTTP disabled afterward.
+
 The server uses a Red Hat-style installation: `/usr/sbin/httpd`,
 `/usr/sbin/apachectl`, `/etc/httpd/conf.d`, and `/usr/local/bin/certbot`.
 Its service is managed by systemd as `httpd`. The bootstrap instructions
@@ -186,12 +192,14 @@ Validate content and renewal:
 ```sh
 curl --fail -I https://xiribsd.org/
 curl --fail -I https://xiribsd.org/assets/xiri-logo.png
-/usr/bin/snap run certbot renew --cert-name xiribsd.org --dry-run --run-deploy-hooks
+/usr/bin/snap run certbot renew --cert-name xiribsd.org --dry-run \
+  --run-deploy-hooks --no-random-sleep-on-renew
 firewall-cmd --zone=public --query-service=http
 firewall-cmd --permanent --zone=public --query-service=http
 ```
 
-With HTTP initially closed, both final firewall checks should print `no`
+The manual test skips Certbot's random scheduling delay; regular scheduled
+renewals retain it. With HTTP initially closed, both final firewall checks should print `no`
 (exit status 1). This uses the same Snap installation as the existing
 `snap.certbot.renew.timer`, which handles scheduling. The local
 `/usr/local/bin/certbot` points to `/opt/certbot/bin/certbot`; both installations
