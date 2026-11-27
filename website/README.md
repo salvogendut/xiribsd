@@ -17,6 +17,12 @@ responsive and uses local system fonts. No workstation photographs are
 bundled; the visual reference is the
 [Octane front view](https://bukosek.si/hardware/collection/sgi-octane.html).
 
+The Screenshots section shows the supplied Indy R4400 emulation captures,
+from startup to the IRIX desktop. Its four PNGs in `public/assets/screenshots/`
+are unchanged copies of the screenshots taken on 2026-11-27 at 07:55:47,
+07:55:58, 07:56:27, and 07:57:54, in that order. The gallery uses two columns on larger screens and one on phones, and
+links each image to its full-size original.
+
 ## Preview
 
 From the repository root:

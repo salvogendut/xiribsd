@@ -56,6 +56,15 @@ strong { font-weight: 550; color: var(--text); }
 .machine-list li { font-size: 1.5rem; padding: 1.5rem 1.25rem; border-left: 1px solid var(--line); }
 .machine-list li:first-child { border-left: 0; }
 .machine-list span { display: block; margin-top: 0.3rem; font-size: 0.875rem; color: var(--muted); }
+.screenshot-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
+.screenshot { min-width: 0; padding: 0.5rem; background: #163e35; border: 1px solid; border-color: #698e77 #0c2c22 #0c2c22 #698e77; border-radius: 5px; }
+.screenshot-image { display: block; overflow: hidden; background: #0b1a19; border: 1px solid #0c2c22; border-radius: 2px; cursor: zoom-in; }
+.screenshot-image:hover { border-color: var(--accent); }
+.screenshot-image:focus-visible { outline-offset: 3px; }
+.screenshot img { display: block; width: 100%; height: auto; }
+.screenshot figcaption { padding: 1rem 0.5rem 0.5rem; }
+.screenshot h3 { margin: 0; font-size: 1.125rem; font-weight: 600; letter-spacing: 0; }
+.screenshot figcaption p { margin-top: 0.3rem; color: var(--muted); font-size: 0.9375rem; }
 .download-placeholder { border: 2px solid; border-color: #f1f1df #103b2c #103b2c #f1f1df; border-radius: 5px; padding: 2rem; background: linear-gradient(120deg, #d9dccf, #bdccba); color: #233b30; box-shadow: 3px 4px 0 #12392b; }
 .release-status { display: inline-block; font-size: 0.875rem; color: #392d19; background: #f1d5a1; border: 1px solid; border-color: #9b8b69 #f9ebcb #f9ebcb #9b8b69; border-radius: 2px; padding: 0.2rem 0.65rem; }
 h3 { margin: 1.25rem 0 0.65rem; font-size: 1.4rem; font-weight: 550; letter-spacing: -0.02em; }
@@ -86,6 +95,7 @@ footer { display: flex; align-items: center; justify-content: space-between; fle
   .machine-list { grid-template-columns: repeat(2, 1fr); }
   .machine-list li:nth-child(3) { border-left: 0; }
   .machine-list li:nth-child(n+3) { border-top: 1px solid var(--line); }
+  .screenshot-grid { grid-template-columns: 1fr; margin-top: 1.5rem; }
   .download-placeholder { padding: 1.5rem; }
   footer { align-items: flex-start; flex-direction: column; }
 }
