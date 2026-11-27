@@ -3,7 +3,8 @@
 Static scaffolding for `https://xiribsd.org`, hosted by Apache on
 `kimcarsons`. Serve only `public/`; it needs no build tools, JavaScript,
 database or third-party assets. The Downloads section deliberately has no
-release files or download links. XiriBSD ISOs will be added later.
+release files or download links. Links to externally hosted XiriBSD ISOs
+will be added later; release images will not be stored on `kimcarsons`.
 
 The project description and platform summary come from Xiri's
 [README](https://github.com/salvogendut/xiri/blob/99c2e90715eae938c6f4d858853e33e875cdaf72/README.md)
@@ -73,7 +74,7 @@ rsync -rt --chown=root:root --chmod=D755,F644 website/public/ kimcarsons:/var/ww
 scp website/apache/xiribsd.org.conf kimcarsons:/tmp/xiribsd.org.conf
 ```
 
-No `--delete` is used: future release downloads must survive a page update.
+No `--delete` is used: page updates preserve existing server files.
 Do not upload repository metadata, deployment configuration or documentation
 into the document root. The SSH profile selects the user and port.
 The files are owned by `root:root`, with directories `0755` and files
@@ -234,7 +235,8 @@ ssh kimcarsons 'restorecon -RF /var/www/xiribsd.org'
 ```
 
 No Apache reload is needed for static content. Keep the production HTTPS
-configuration and renewal hooks in place. Update the Downloads section only
-when actual release files and checksums are available. Large ISO/CHD files belong in
-release storage on the server, not in this source repository. Directory
-listing is disabled; publish explicit download links when ready.
+configuration and renewal hooks in place. Release ISO/CHD images are hosted
+externally. Once releases and checksums are available, publish their download
+links in the Downloads section. Do not upload release images to `kimcarsons`
+or commit them to this source repository. Keep the section unpopulated until
+the external download URLs are ready.

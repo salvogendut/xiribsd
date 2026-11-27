@@ -317,6 +317,10 @@ the corresponding sources and notices, and sign the release checksum list
 as a release-management step. A normal build should not need signing
 secrets or publish anything externally.
 
+Release images will be stored on external hosting. The website on
+`kimcarsons` will provide download links for ISO/CHD images and their
+checksums; it will not store the release images itself.
+
 ## Implementation milestones
 
 1. **Freeze the first profile and curate sources.** Review which changes on
