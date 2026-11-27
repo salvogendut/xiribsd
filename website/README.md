@@ -7,6 +7,12 @@ ISO `xiribsd-indy-donor-profiles-11.99.11.iso` through the owner-supplied
 BitTorrent magnet URI (`btih:beb9fb50bfddc518fb189b913a6433492116617c`).
 Release images are distributed externally and are not stored on `kimcarsons`.
 
+The homepage and installation guide carry the owner's IRIX disclaimer: the
+project does not share, distribute or host proprietary IRIX code or any other
+part of IRIX. Its work provides an IRIX compatibility layer for NetBSD; users
+supply their own installed donor image for original executables, libraries,
+fonts and artwork. Downloads links to the full disclaimer.
+
 The project description and platform summary come from Xiri's
 [README](https://github.com/salvogendut/xiri/blob/5ed2e28fab91b6232de561e0cad8e101ddf5eeba/README.md)
 and [architecture guide](https://github.com/salvogendut/xiri/blob/5ed2e28fab91b6232de561e0cad8e101ddf5eeba/docs/ARCHITECTURE.md),
