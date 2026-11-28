@@ -34,9 +34,9 @@
           <p class="eyebrow">SGI Indy · Prismatic or IRIS</p>
           <h1>Installation howto</h1>
           <p class="guide-summary">Install native XiriBSD first. Then run <code>xiriprep</code> on the installed system to prepare an IRIX desktop from your own donor image.</p>
-          <p class="guide-meta">Updated <time datetime="2026-11-27">27 November 2026</time> · Based on the Xiri and IRIS documentation</p>
+          <p class="guide-meta">Updated <time datetime="2026-11-28">28 November 2026</time> · Based on the Xiri and IRIS documentation</p>
           <div class="guide-notice">
-            <p><strong>Development media.</strong> Download links are temporarily unavailable; see <a href="./#downloads">Downloads</a> for availability. The filenames below identify development builds. This guide covers Indy emulation; physical workstation testing is still ahead.</p>
+            <p><strong>Development media.</strong> The 28 November Indy installer ISO and its SHA-256 checksum file are available from Google Drive through <a href="./#downloads">Downloads</a>. This guide covers Indy emulation; physical workstation testing is still ahead.</p>
           </div>
           <div class="guide-notice">
             <p><strong>IRIX disclaimer.</strong> We do not share, distribute, or host any proprietary IRIX code or any other part of IRIX. Our work is limited to providing an IRIX compatibility layer for NetBSD. Original IRIX executables, libraries, fonts, and artwork must come from your own installed donor image. <a href="./#disclaimer">Read the project disclaimer</a>.</p>
@@ -66,11 +66,14 @@
               <p>You can complete the native installation with just the ISO and a blank disk. The installer provides NetBSD, the Xiri compatibility module, native tools, and donor profiles; the first login opens native <strong>ctwm</strong>. All original IRIX executables, libraries, fonts, and desktop artwork come from your donor disk when you later run <code>xiriprep</code>.</p>
               <ul>
                 <li><a href="https://github.com/salvogendut/prismatic">Prismatic</a> or <a href="https://github.com/techomancer/iris">IRIS</a>, configured as an Indy with an R4400 or R5000 CPU, 256 MiB of RAM, and Newport graphics.</li>
-                <li>The installer <code>xiribsd-indy-donor-profiles-11.99.11.iso</code>, found under <code>.work/images/</code> in the Xiri checkout for the documented build.</li>
+                <li>The installer <code>xiribsd-11.99.11-01-2026-11-28.iso</code>, available with its <code>.iso.sha256</code> checksum file in <a href="./#downloads">Downloads</a>.</li>
                 <li>A new, blank 6144 MiB raw disk for XiriBSD. The installer will format this disk.</li>
                 <li>For the optional IRIX desktop, a standalone CHD or raw whole-disk image matching a supported donor profile. The reference releases are <strong>6.5.22f</strong> and <strong>6.5.30f</strong>; the current installer also recognizes the independently distributed <strong>SuperIRIX Indy 6.5.22m</strong>.</li>
               </ul>
-              <p>Prismatic is built on the IRIS emulator core. Choose either <a href="#prismatic-setup">Prismatic’s settings menus</a> or <a href="#iris-install">vanilla IRIS’s standalone window and TOML configuration</a>, then follow the same guest installation and donor-import steps.</p>
+              <p>Download the ISO and its checksum file into the same directory, then verify the image before attaching it.</p>
+              <p class="command-context">On a Linux workstation, from the download directory:</p>
+              <pre tabindex="0"><code class="language-sh">sha256sum -c xiribsd-11.99.11-01-2026-11-28.iso.sha256</code></pre>
+              <p>Proceed when the check reports <strong>OK</strong>. Prismatic is built on the IRIS emulator core. Choose either <a href="#prismatic-setup">Prismatic’s settings menus</a> or <a href="#iris-install">vanilla IRIS’s standalone window and TOML configuration</a>, then follow the same guest installation and donor-import steps.</p>
               <p>The same native installer includes all five desktop profiles below. Each installed system uses one donor release; keep separate system disks for 6.5.22f, 6.5.22m, and 6.5.30f.</p>
               <div class="table-scroll" tabindex="0" role="region" aria-label="Qualified donor profiles and Indy targets">
                 <table class="guide-table">
@@ -97,7 +100,7 @@
                   <tbody>
                     <tr><th scope="row">General</th><td>Indy; R4400 or R5000; 256 MiB RAM; default Newport graphics; <strong>Graphics</strong> console; <strong>PROM boot: Keep existing</strong>.</td></tr>
                     <tr><th scope="row">Media: SCSI ID 1</th><td>Choose <strong>New disk…</strong>, select <strong>Raw</strong>, enter <strong>6144 MiB</strong>, and choose a new filename such as <code>xiribsd-indy.raw</code>. Select <strong>Create disk and attach to draft</strong>.</td></tr>
-                    <tr><th scope="row">Media: SCSI ID 6</th><td>Attach <code>xiribsd-indy-donor-profiles-11.99.11.iso</code> as the <strong>CD-ROM</strong>.</td></tr>
+                    <tr><th scope="row">Media: SCSI ID 6</th><td>Attach <code>xiribsd-11.99.11-01-2026-11-28.iso</code> as the <strong>CD-ROM</strong>.</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -144,7 +147,7 @@ overlay = false
 [[devices]]
 type = "cdrom"
 at = "scsi0/t6"
-path = "/absolute/path/to/xiribsd-indy-donor-profiles-11.99.11.iso"</code></pre>
+path = "/absolute/path/to/xiribsd-11.99.11-01-2026-11-28.iso"</code></pre>
               <p>The default build includes the Indy PROM. The disk receives writes directly because <code>overlay = false</code>. Keep deferred SCSI interrupts enabled for NetBSD. Relative paths resolve from the directory where you launch IRIS, so always run this machine from <code>xiribsd-indy</code>.</p>
               <p class="command-context">On your workstation, from the new Indy directory:</p>
               <pre tabindex="0"><code class="language-sh">/absolute/path/to/iris/target/release/iris --validate --config iris.toml
@@ -184,14 +187,15 @@ boot</code></pre>
 
             <section class="guide-section" id="existing-indy" aria-labelledby="existing-title">
               <h2 id="existing-title">Use an existing Indy</h2>
-              <p>If your disk was installed from an earlier native or xiriprep ISO, update the tools and profiles without reinstalling. Boot that disk at SCSI ID 1. Attach <code>.work/images/xiriprep-indy-donor-profiles-tools.iso</code> through Prismatic’s <strong>F9 / Media / SCSI ID 6 / CD-ROM</strong> or <a href="#iris-media">IRIS’s CD picker</a>. Keep the previous tools CD and back up any customized installed tools before updating.</p>
+              <p>If your disk was installed from an earlier native or xiriprep ISO, update the tools and profiles without reinstalling. Boot that disk at SCSI ID 1. Attach <code>.work/images/xiriprep-indy-operator-tools.iso</code> through Prismatic’s <strong>F9 / Media / SCSI ID 6 / CD-ROM</strong> or <a href="#iris-media">IRIS’s CD picker</a>. Keep the previous tools CD and back up any customized installed tools before updating.</p>
               <p class="command-context">In a root shell inside the XiriBSD guest:</p>
               <pre tabindex="0"><code class="language-sh">mkdir -p /cdrom
 mount -r -t cd9660 /dev/cd0a /cdrom
 (cd / &amp;&amp; tar -xzpf /cdrom/xiriprep.tgz)
 umount /cdrom</code></pre>
-              <p>Eject the tools CD, then attach your donor media. The current <code>xiribsd-indy-donor-profiles-11.99.11.iso</code> already includes these tools and all five profiles.</p>
+              <p>Eject the tools CD, then attach your donor media. The current <code>xiribsd-11.99.11-01-2026-11-28.iso</code> already includes these tools and all five profiles. Its native components also include the account shutdown update, optical media support, and desktop microphone action. See the <a href="https://github.com/salvogendut/xiri/blob/main/docs/results/2026-11-28-indy-installer.md">November 28 installer contents and qualification results</a>.</p>
               <h3>Revert the tools update</h3>
+              <p>To return to the previous donor-profiles tools, reinstall <code>xiriprep-indy-donor-profiles-tools.iso</code> using the same commands. Account group memberships are stored separately in NetBSD’s <code>/etc/group</code>.</p>
               <p>If you previously used <code>xiriprep-indy-desktop-tools.iso</code>, reattach that CD and repeat the mount and extraction above. Restore customized tools from your backup. Follow the <a href="https://github.com/salvogendut/xiri/blob/main/docs/XIRIPREP.md#revert-the-tools-update">rollback instructions and hash checks</a> to remove the three added profiles only when they still match their shipped contents.</p>
               <p>This tools update and rollback preserved the existing 4Dwm account and preferences on both original reference releases. Kernel, module, and desktop runtime upgrades have separate recovery procedures.</p>
             </section>
@@ -259,7 +263,8 @@ mount -r -t ffs /dev/sd1c /mnt/donors
               <h2 id="accounts-title">Accounts and storage</h2>
               <ul>
                 <li><strong>Existing account:</strong> its native home and password are preserved. A previous <code>~/.xsession</code> is saved as <code>~/.xsession.before-xiriprep</code>; repeating the command preserves that backup. Restore it to return to the previous session. Other logins keep their current desktops.</li>
-                <li><strong>Missing account:</strong> after identifying the donor, xiriprep offers to create the user. The default is <strong>No</strong>. If you choose <strong>Yes</strong>, it creates an ordinary user with home <code>/usr/people/&lt;login&gt;</code> and prompts for a password. Create the account beforehand for non-interactive use.</li>
+                <li><strong>Missing account:</strong> after identifying the donor, xiriprep offers to create the user. The default is <strong>No</strong>. If you choose <strong>Yes</strong>, it verifies the shared desktop, creates the user with home <code>/usr/people/&lt;login&gt;</code>, adds them to NetBSD’s <code>operator</code> group, and prompts for a password. This permits desktop shutdown and reading raw disk devices. Create the account beforehand for non-interactive use.</li>
+                <li><strong>Desktop shutdown:</strong> existing users keep their permissions by default. Add <code>--allow-shutdown</code> when preparing an existing account to grant operator membership. See the <a href="https://github.com/salvogendut/xiri/blob/main/docs/XIRIPREP.md#allow-desktop-shutdown-for-an-existing-account">shutdown instructions</a>.</li>
                 <li><strong>Another user:</strong> repeat xiriprep with the intended login. A matching shared installation is reused.</li>
                 <li><strong>Another IRIX release:</strong> use a separate system disk. Keep 6.5.22f, 6.5.22m, and 6.5.30f separate. The tools reject a donor release that conflicts with an existing desktop receipt.</li>
               </ul>
@@ -282,10 +287,9 @@ mount -r -t ffs /dev/sd1c /mnt/donors
               <h2 id="build-title">Build the media</h2>
               <p>Developers can build the native ISO from the Xiri checkout on a Linux workstation. The documented requirements include Python 3.11+, Git 2.38+, CMake 3.19+, <code>genisoimage</code>, <code>isoinfo</code>, C and C++ compilers, the NetBSD cross-build prerequisites, and access to the pinned libchdr, FAM, and pkgsrc sources.</p>
               <p class="command-context">On the workstation, from the Xiri checkout:</p>
-              <pre tabindex="0"><code class="language-sh">scripts/build-xiribsd-iso.py --work .work/native-indy \
-    --output .work/images/xiribsd-indy-native.iso</code></pre>
-              <p>The output filename is selectable. When using this example, attach the generated <code>xiribsd-indy-native.iso</code> as the installer CD in the fresh-install steps above.</p>
-              <p>The builder records its source revisions and recipe hashes in <code>.work/native-indy/sources.json</code> and reuses that lock on retry. Archive it alongside the ISO. To reproduce the current installer with all five profiles, use <a href="https://github.com/salvogendut/xiri/blob/main/lab/native-iso/indy-owner-donors-20261127.json">the five-profile installer lock</a> with the Xiri recipe revision recorded in its <code>xiri</code> field, passing the lock file with <code>--lock</code>. The earlier <code>indy-xiriprep-20261127.json</code> lock reproduces the two-profile installer.</p>
+              <pre tabindex="0"><code class="language-sh">scripts/build-xiribsd-iso.py --work .work/native-indy --xiri-version 01</code></pre>
+              <p>The builder names the ISO from the prepared NetBSD version, XiriBSD revision, and workstation’s local build date. Use <code>--output-dir</code> to choose another destination. Attach the generated ISO in the fresh-install steps above.</p>
+              <p>The builder records its source revisions and recipe hashes in <code>.work/native-indy/sources.json</code> and reuses that lock on retry. Archive it alongside the ISO. To reproduce the <strong>earlier November 27 donor-profiles installer</strong>, use <a href="https://github.com/salvogendut/xiri/blob/main/lab/native-iso/indy-owner-donors-20261127.json">the five-profile installer lock</a> with the Xiri recipe revision recorded in its <code>xiri</code> field, passing the lock file with <code>--lock</code>. That historical builder takes an explicit <code>--output /path/to/image.iso</code>. The earlier <code>indy-xiriprep-20261127.json</code> lock reproduces the two-profile installer. The November 28 image’s <a href="https://github.com/salvogendut/xiri/blob/main/docs/results/2026-11-28-indy-installer.md#contents">component revisions</a> are recorded separately.</p>
               <p>See the <a href="https://github.com/salvogendut/xiri/blob/main/docs/XIRI-INSTALLATION.md#build-the-native-indy-iso">full build instructions</a> for source preparation, toolchain reuse, and Toolbox options.</p>
               <h3>Rebuild the tools CD</h3>
               <p class="command-context">On the workstation, from the Xiri checkout:</p>
@@ -295,7 +299,7 @@ mount -r -t ffs /dev/sd1c /mnt/donors
 
             <section class="guide-section" id="source-docs" aria-labelledby="sources-title">
               <h2 id="sources-title">Source documentation</h2>
-              <p>This howto adapts the Xiri installation documentation and IRIS user guides reviewed on 27 November 2026. Follow the source guides for subsequent changes and additional detail:</p>
+              <p>This howto adapts the Xiri installation documentation and IRIS user guides reviewed on 27 November 2026, with media, build, and account instructions refreshed for the November 28 installer. Follow the source guides for subsequent changes and additional detail:</p>
               <ul>
                 <li><a href="https://github.com/salvogendut/xiri/blob/main/docs/INSTALL-INDY-PRISMATIC.md">Install XiriBSD on an Indy in Prismatic</a></li>
                 <li><a href="https://github.com/salvogendut/xiri/blob/main/docs/XIRIPREP.md">Prepare an IRIX desktop account with xiriprep</a></li>

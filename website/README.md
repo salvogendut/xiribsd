@@ -2,9 +2,12 @@
 
 Static scaffolding for `https://xiribsd.org`, hosted by Apache on
 `kimcarsons`. Serve only `public/`; it needs no build tools, JavaScript,
-database or third-party assets. The Downloads section identifies the development
-ISO `xiribsd-indy-donor-profiles-11.99.11.iso`, but its download link has been
-temporarily removed at the owner's request.
+database or third-party assets. The Downloads section links to the development
+ISO and its SHA-256 checksum file on Google Drive, supplied by the owner on 2026-11-28:
+
+- [xiribsd-11.99.11-01-2026-11-28.iso](https://drive.google.com/file/d/1T14XH7FiAK1jsVfD4J17txJuYsIVxKAf/view?usp=sharing)
+- [xiribsd-11.99.11-01-2026-11-28.iso.sha256](https://drive.google.com/file/d/1LBHw3qaRXbsRccj2Z-HCmQliTl1M_J9u/view?usp=sharing)
+
 Release images are distributed externally and are not stored on `kimcarsons`.
 
 The homepage and installation guide carry the owner's IRIX disclaimer: the
@@ -59,6 +62,12 @@ media filenames, SCSI IDs, command examples and qualified donor releases
 against those guides. Only media with an explicitly supplied release URL or
 magnet URI should be linked in Downloads; other development filenames do not
 imply that those images are available publicly.
+
+Media references, build syntax, tools-CD names and account behavior were
+refreshed on 2026-11-28 against Xiri
+[`faac098`](https://github.com/salvogendut/xiri/commit/faac098404d02e143532736f916cf0baaa7fd2a0),
+including `docs/results/2026-11-28-indy-installer.md`. The November 27 source
+lock remains documented explicitly as a historical installer recipe.
 
 The standalone IRIS route was added from `../iris` at commit
 [`727f877`](https://github.com/salvogendut/iris/commit/727f877098ebf4002689c466668992f1c1092100),
@@ -285,5 +294,5 @@ No Apache reload is needed for static content. Keep the production HTTPS
 configuration and renewal hooks in place. Release ISO/CHD images are hosted
 externally. Publish supplied download URLs or magnet URIs in Downloads and
 add checksums when available. Do not upload release images to `kimcarsons`
-or commit them to this source repository. Keep the current ISO download link
-unpublished until the owner requests restoring it.
+or commit them to this source repository. The current ISO and SHA-256 checksum
+use the Google Drive links above; the previous magnet link remains removed.
